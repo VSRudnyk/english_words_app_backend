@@ -2,8 +2,11 @@ const { default: mongoose } = require('mongoose');
 const { Word } = require('../models');
 
 const getWords = async () => {
-  console.log('getWords');
   return await Word.find({});
+};
+
+const getRandomWords = async (limit) => {
+  return await Word.aggregate([{ $sample: { size: limit } }]);
 };
 
 const addWord = async (body) => {
@@ -26,6 +29,7 @@ const removeWord = async (id) => {
 
 module.exports = {
   getWords,
+  getRandomWords,
   addWord,
   updateWord,
   removeWord,

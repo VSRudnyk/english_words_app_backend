@@ -1,13 +1,21 @@
 const {
   getWords,
+  getRandomWords,
   addWord,
   updateWord,
   removeWord,
 } = require('../service/words');
 
 const getAllWords = async (req, res, next) => {
-  console.log('getAllWords');
   const data = await getWords();
+  res.status(200).json({
+    data,
+  });
+};
+
+const getRandomWordsArr = async (req, res, next) => {
+  const limit = Number(req.query.limit);
+  const data = await getRandomWords(limit);
   res.status(200).json({
     data,
   });
@@ -51,6 +59,7 @@ const deleteWord = async (req, res, next) => {
 
 module.exports = {
   getAllWords,
+  getRandomWordsArr,
   addNewWord,
   updateWordById,
   deleteWord,
