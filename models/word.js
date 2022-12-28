@@ -10,6 +10,9 @@ const wordSchema = Schema(
       type: String,
       required: [true, 'Set translation'],
     },
+    synonyms: {
+      type: String,
+    },
   },
 
   { versionKey: false, timestamps: true }
