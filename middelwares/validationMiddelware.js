@@ -6,7 +6,6 @@ module.exports = {
     const schema = Joi.object({
       word: Joi.string().required(),
       translation: Joi.string().required(),
-      synonyms: Joi.array().optional(),
     });
 
     const validationResult = schema.validate(body);
@@ -23,7 +22,6 @@ module.exports = {
     const schema = Joi.object({
       word: Joi.string().optional(),
       translation: Joi.string().optional(),
-      synonyms: Joi.array().optional(),
     });
 
     const validationResult = schema.validate(body);
