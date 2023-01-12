@@ -22,7 +22,7 @@ module.exports = {
     const schema = Joi.object({
       word: Joi.string().optional(),
       translation: Joi.string().optional(),
-      synonyms: Joi.string().optional(),
+      synonyms: Joi.string().valid('').optional(),
     });
 
     const validationResult = schema.validate(body);
