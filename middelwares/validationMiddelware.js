@@ -22,14 +22,14 @@ module.exports = {
     const schema = Joi.object({
       word: Joi.string().optional(),
       translation: Joi.string().optional(),
-      synonyms: Joi.string().any('').optional(),
+      synonyms: Joi.string().empty(''),
     });
 
     const validationResult = schema.validate(body);
 
     if (validationResult.error) {
       return res.status(400).json({
-        message: 'missing required name field',
+        message: validationResult.error,
       });
     }
     next();
