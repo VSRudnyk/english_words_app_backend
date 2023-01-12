@@ -11,7 +11,7 @@ const wordSchema = Schema(
       required: [true, 'Set translation'],
     },
     synonyms: {
-      type: Array,
+      type: String,
     },
   },
 
