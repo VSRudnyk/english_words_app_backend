@@ -14,6 +14,10 @@ const addWord = async (body) => {
   return await Word.create(body);
 };
 
+const getWordsWithMistakes = async () => {
+  return await WordWithMistakes.find({});
+};
+
 const addWordWithMistakes = async (body) => {
   return await WordWithMistakes.create(body);
 };
@@ -35,6 +39,7 @@ const removeWord = async (id) => {
 module.exports = {
   getWords,
   getRandomWords,
+  getWordsWithMistakes,
   addWord,
   addWordWithMistakes,
   updateWord,

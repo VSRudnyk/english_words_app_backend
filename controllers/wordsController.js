@@ -1,6 +1,7 @@
 const {
   getWords,
   getRandomWords,
+  getWordsWithMistakes,
   addWord,
   addWordWithMistakes,
   updateWord,
@@ -17,6 +18,13 @@ const getAllWords = async (req, res, next) => {
 const getRandomWordsArr = async (req, res, next) => {
   const limit = Number(req.query.limit);
   const data = await getRandomWords(limit);
+  res.status(200).json({
+    data,
+  });
+};
+
+const getAllWordsWithMistakes = async (req, res, next) => {
+  const data = await getWordsWithMistakes();
   res.status(200).json({
     data,
   });
@@ -73,6 +81,7 @@ const deleteWord = async (req, res, next) => {
 module.exports = {
   getAllWords,
   getRandomWordsArr,
+  getAllWordsWithMistakes,
   addNewWord,
   addNewWordWithMistakes,
   updateWordById,

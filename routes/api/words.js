@@ -2,6 +2,7 @@ const express = require('express');
 const {
   getAllWords,
   getRandomWordsArr,
+  getAllWordsWithMistakes,
   addNewWord,
   addNewWordWithMistakes,
   updateWordById,
@@ -17,6 +18,7 @@ const router = express.Router();
 
 router.get('/', getAllWords);
 router.get('/random', getRandomWordsArr);
+router.get('/mistakes', getAllWordsWithMistakes);
 router.post('/', addWordValidation, addNewWord);
 router.post('/mistakes', addWordValidation, addNewWordWithMistakes);
 router.put('/:wordId', updateWordtValidation, updateWordById);

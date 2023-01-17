@@ -18,7 +18,7 @@ const wordWithMistakesSchema = Schema(
   { versionKey: false, timestamps: true }
 );
 
-const WordWithMistakes = model('word', wordWithMistakesSchema);
+const WordWithMistakes = model('mistakes', wordWithMistakesSchema);
 
 module.exports = {
   WordWithMistakes,
