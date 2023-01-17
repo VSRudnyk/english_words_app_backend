@@ -1,5 +1,6 @@
 const { default: mongoose } = require('mongoose');
 const { Word } = require('../models');
+const { WordWithMistakes } = require('../models');
 
 const getWords = async () => {
   return await Word.find({});
@@ -11,6 +12,10 @@ const getRandomWords = async (limit) => {
 
 const addWord = async (body) => {
   return await Word.create(body);
+};
+
+const addWordWithMistakes = async (body) => {
+  return await WordWithMistakes.create(body);
 };
 
 const updateWord = async (id, body) => {
@@ -31,6 +36,7 @@ module.exports = {
   getWords,
   getRandomWords,
   addWord,
+  addWordWithMistakes,
   updateWord,
   removeWord,
 };

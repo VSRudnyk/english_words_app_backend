@@ -2,6 +2,7 @@ const {
   getWords,
   getRandomWords,
   addWord,
+  addWordWithMistakes,
   updateWord,
   removeWord,
 } = require('../service/words');
@@ -24,6 +25,18 @@ const getRandomWordsArr = async (req, res, next) => {
 const addNewWord = async (req, res, next) => {
   const body = req.body;
   const result = await addWord(body);
+  res.status(201).json({
+    status: 'success',
+    code: 201,
+    data: {
+      result,
+    },
+  });
+};
+
+const addNewWordWithMistakes = async (req, res, next) => {
+  const body = req.body;
+  const result = await addWordWithMistakes(body);
   res.status(201).json({
     status: 'success',
     code: 201,
@@ -61,6 +74,7 @@ module.exports = {
   getAllWords,
   getRandomWordsArr,
   addNewWord,
+  addNewWordWithMistakes,
   updateWordById,
   deleteWord,
 };

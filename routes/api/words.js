@@ -3,6 +3,7 @@ const {
   getAllWords,
   getRandomWordsArr,
   addNewWord,
+  addNewWordWithMistakes,
   updateWordById,
   deleteWord,
 } = require('../../controllers/wordsController');
@@ -17,6 +18,7 @@ const router = express.Router();
 router.get('/', getAllWords);
 router.get('/random', getRandomWordsArr);
 router.post('/', addWordValidation, addNewWord);
+router.post('/mistakes', addWordValidation, addNewWordWithMistakes);
 router.put('/:wordId', updateWordtValidation, updateWordById);
 router.delete('/:wordId', deleteWord);
 
