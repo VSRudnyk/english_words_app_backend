@@ -2,6 +2,9 @@ const { Schema, model } = require('mongoose');
 
 const wordWithMistakesSchema = Schema(
   {
+    _id: {
+      type: String,
+    },
     word: {
       type: String,
       required: [true, 'Set word'],
