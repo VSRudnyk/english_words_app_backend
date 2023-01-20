@@ -20,7 +20,7 @@ router.get('/', getAllWords);
 router.get('/random', getRandomWordsArr);
 router.get('/mistakes', getAllWordsWithMistakes);
 router.post('/', addWordValidation, addNewWord);
-router.post('/mistakes', addWordValidation, addNewWordWithMistakes);
+router.post('/mistakes', addNewWordWithMistakes);
 router.put('/:wordId', updateWordtValidation, updateWordById);
 router.delete('/:wordId', deleteWord);
 

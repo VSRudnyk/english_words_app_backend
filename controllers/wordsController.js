@@ -44,11 +44,10 @@ const addNewWord = async (req, res, next) => {
 
 const addNewWordWithMistakes = async (req, res, next) => {
   const body = req.body;
-  const result = await addWordWithMistakes(body);
+  body.map((item) => addWordWithMistakes(item));
   res.status(201).json({
     status: 'success',
     code: 201,
-    result,
   });
 };
 
