@@ -42,6 +42,13 @@ const removeWord = async (id) => {
   return Word.findByIdAndDelete(id);
 };
 
+const removeWordWithMistakes = async (id) => {
+  if (!mongoose.Types.ObjectId.isValid(id)) {
+    return null;
+  }
+  return Mistakes.findByIdAndDelete(id);
+};
+
 module.exports = {
   getWords,
   getRandomWords,
@@ -50,4 +57,5 @@ module.exports = {
   addWordWithMistakes,
   updateWord,
   removeWord,
+  removeWordWithMistakes,
 };

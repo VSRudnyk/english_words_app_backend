@@ -6,6 +6,7 @@ const {
   addWordWithMistakes,
   updateWord,
   removeWord,
+  removeWordWithMistakes,
 } = require('../service/words');
 
 const getAllWords = async (req, res, next) => {
@@ -65,8 +66,18 @@ const updateWordById = async (req, res, next) => {
 
 const deleteWord = async (req, res, next) => {
   const id = req.params.wordId;
-  console.log(id);
   const deletedWord = await removeWord(id);
+  if (!deletedWord) {
+    res.status(404).json({
+      message: `Word with id=${id} not found`,
+    });
+  }
+  res.status(200).json(deletedWord);
+};
+
+const deleteWordWithMistakes = async (req, res, next) => {
+  const id = req.params.wordId;
+  const deletedWord = await removeWordWithMistakes(id);
   if (!deletedWord) {
     res.status(404).json({
       message: `Word with id=${id} not found`,
@@ -83,4 +94,5 @@ module.exports = {
   addNewWordWithMistakes,
   updateWordById,
   deleteWord,
+  deleteWordWithMistakes,
 };
