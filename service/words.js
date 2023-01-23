@@ -19,6 +19,12 @@ const getWordsWithMistakes = async () => {
 };
 
 const addWordWithMistakes = async (item) => {
+  const { translation } = item;
+  const mistakes = await Mistakes.find({ translation });
+  if (mistakes.length > 0) {
+    return;
+  }
+
   return await Mistakes.create(item);
 };
 

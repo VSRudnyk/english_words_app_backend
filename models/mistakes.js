@@ -15,7 +15,7 @@ const mistakesSchema = Schema(
     },
   },
 
-  { versionKey: false, timestamps: true }
+  { versionKey: false }
 );
 
 const Mistakes = model('mistakes', mistakesSchema);
