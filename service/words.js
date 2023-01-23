@@ -1,6 +1,6 @@
 const { default: mongoose } = require('mongoose');
 const { Word } = require('../models');
-const { WordWithMistakes } = require('../models');
+const { Mistakes } = require('../models');
 
 const getWords = async () => {
   return await Word.find({});
@@ -15,16 +15,11 @@ const addWord = async (body) => {
 };
 
 const getWordsWithMistakes = async () => {
-  return await WordWithMistakes.find({});
+  return await Mistakes.find({});
 };
 
-const addWordWithMistakes = async (body) => {
-  const { translation } = body;
-  const findWord = await WordWithMistakes.find({ translation });
-  if (findWord !== null) {
-    return;
-  }
-  return await WordWithMistakes.create(body);
+const addWordWithMistakes = async (item) => {
+  return await Mistakes.create(item);
 };
 
 const updateWord = async (id, body) => {

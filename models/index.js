@@ -1,4 +1,4 @@
 const { Word } = require('./word');
-const { WordWithMistakes } = require('./wordWithMistakes');
+const { Mistakes } = require('./mistakes');
 
-module.exports = { Word, WordWithMistakes };
+module.exports = { Word, Mistakes };

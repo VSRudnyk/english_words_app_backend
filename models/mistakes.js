@@ -1,6 +1,6 @@
 const { Schema, model } = require('mongoose');
 
-const wordWithMistakesSchema = Schema(
+const mistakesSchema = Schema(
   {
     word: {
       type: String,
@@ -18,8 +18,8 @@ const wordWithMistakesSchema = Schema(
   { versionKey: false, timestamps: true }
 );
 
-const WordWithMistakes = model('mistakes', wordWithMistakesSchema);
+const Mistakes = model('mistakes', mistakesSchema);
 
 module.exports = {
-  WordWithMistakes,
+  Mistakes,
 };

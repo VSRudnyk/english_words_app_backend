@@ -44,13 +44,7 @@ const addNewWord = async (req, res, next) => {
 
 const addNewWordWithMistakes = async (req, res, next) => {
   const body = req.body;
-  body.map(({ word, translation, synonyms }) =>
-    addWordWithMistakes({
-      word,
-      translation,
-      synonyms,
-    })
-  );
+  body.map((item) => addWordWithMistakes(item));
   res.status(201).json({
     status: 'success',
     code: 201,
