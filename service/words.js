@@ -20,8 +20,8 @@ const getWordsWithMistakes = async () => {
 
 const addWordWithMistakes = async (body) => {
   const { translation } = body;
-  const findWord = await WordWithMistakes.findOne({ translation });
-  if (findWord) {
+  const findWord = await WordWithMistakes.find({ translation });
+  if (findWord !== null) {
     return;
   }
   return await WordWithMistakes.create(body);
