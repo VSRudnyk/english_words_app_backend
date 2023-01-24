@@ -76,14 +76,12 @@ const deleteWord = async (req, res, next) => {
 };
 
 const deleteWordWithMistakes = async (req, res, next) => {
-  const id = req.params.wordId;
-  const deletedWord = await removeWordWithMistakes(id);
-  if (!deletedWord) {
-    res.status(404).json({
-      message: `Word with id=${id} not found`,
-    });
-  }
-  res.status(200).json(deletedWord);
+  const body = req.body;
+  body.map(async (item) => removeWordWithMistakes(item._id));
+  res.status(201).json({
+    status: 'success',
+    code: 201,
+  });
 };
 
 module.exports = {
