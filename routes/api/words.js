@@ -24,6 +24,6 @@ router.post('/', addWordValidation, addNewWord);
 router.post('/mistakes', addNewWordWithMistakes);
 router.put('/:wordId', updateWordtValidation, updateWordById);
 router.delete('/:wordId', deleteWord);
-router.delete('/mistakes/delete', deleteWordWithMistakes);
+router.delete('/mistakes/:wordId', deleteWordWithMistakes);
 
 module.exports = router;
