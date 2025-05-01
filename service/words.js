@@ -42,11 +42,11 @@ const removeWord = async (id) => {
   return Word.findByIdAndDelete(id);
 };
 
-const removeWordWithMistakes = async (id) => {
-  if (!mongoose.Types.ObjectId.isValid(id)) {
+const removeWordsWithMistakes = async (ids) => {
+  if (!Array.isArray(ids) || ids.some(id => !mongoose.Types.ObjectId.isValid(id))) {
     return null;
   }
-  return Mistakes.findByIdAndDelete(id);
+  return Mistakes.deleteMany({ _id: { $in: ids } });
 };
 
 module.exports = {
@@ -57,5 +57,5 @@ module.exports = {
   addWordWithMistakes,
   updateWord,
   removeWord,
-  removeWordWithMistakes,
+  removeWordsWithMistakes,
 };

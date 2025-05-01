@@ -7,7 +7,7 @@ const {
   addNewWordWithMistakes,
   updateWordById,
   deleteWord,
-  deleteWordWithMistakes,
+  deleteWordsWithMistakes,
 } = require('../../controllers/wordsController');
 
 const {
@@ -24,6 +24,6 @@ router.post('/', addWordValidation, addNewWord);
 router.post('/mistakes', addNewWordWithMistakes);
 router.put('/:wordId', updateWordtValidation, updateWordById);
 router.delete('/:wordId', deleteWord);
-router.delete('/mistakes/:wordId', deleteWordWithMistakes);
+router.delete('/mistakes/del', deleteWordsWithMistakes);
 
 module.exports = router;

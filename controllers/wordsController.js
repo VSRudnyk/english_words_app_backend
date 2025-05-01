@@ -6,7 +6,7 @@ const {
   addWordWithMistakes,
   updateWord,
   removeWord,
-  removeWordWithMistakes,
+  removeWordsWithMistakes,
 } = require('../service/words');
 
 const getAllWords = async (req, res, next) => {
@@ -68,22 +68,32 @@ const deleteWord = async (req, res, next) => {
   const id = req.params.wordId;
   const deletedWord = await removeWord(id);
   if (!deletedWord) {
-    res.status(404).json({
+    return res.status(404).json({
       message: `Word with id=${id} not found`,
     });
   }
   res.status(200).json(deletedWord);
 };
 
-const deleteWordWithMistakes = async (req, res, next) => {
-  const id = req.params.wordId;
-  const deletedWordWithMistakes = await removeWordWithMistakes(id);
-  if (!deletedWordWithMistakes) {
-    res.status(404).json({
-      message: `Word with id=${id} not found`,
+const deleteWordsWithMistakes = async (req, res, next) => {
+  const { ids } = req.body;
+  if (!Array.isArray(ids) || ids.length === 0) {
+    return res.status(400).json({
+      message: 'Invalid request. Provide a non-empty array of ids.',
     });
   }
-  res.status(200).json(deletedWordWithMistakes);
+
+  const deletedWordsWithMistakes = await removeWordsWithMistakes(ids);
+  if (!deletedWordsWithMistakes || deletedWordsWithMistakes.deletedCount === 0) {
+    return res.status(404).json({
+      message: 'No words with the provided ids were found.',
+    });
+  }
+
+  res.status(200).json({
+    message: 'Words successfully deleted.',
+    deletedCount: deletedWordsWithMistakes.deletedCount,
+  });
 };
 
 module.exports = {
@@ -94,5 +104,5 @@ module.exports = {
   addNewWordWithMistakes,
   updateWordById,
   deleteWord,
-  deleteWordWithMistakes,
+  deleteWordsWithMistakes,
 };
