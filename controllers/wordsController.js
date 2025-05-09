@@ -45,11 +45,9 @@ const addNewWord = async (req, res, next) => {
 
 const addNewWordWithMistakes = async (req, res, next) => {
   const body = req.body;
-  body.map(async (item) => await addWordWithMistakes(item));
-  res.status(201).json({
-    status: 'success',
-    code: 201,
-  });
+  const result = await addWordWithMistakes(body);
+  // body.map(async (item) => await addWordWithMistakes(item));
+  res.status(201).json(result);
 };
 
 const updateWordById = async (req, res, next) => {
@@ -84,7 +82,10 @@ const deleteWordsWithMistakes = async (req, res, next) => {
   }
 
   const deletedWordsWithMistakes = await removeWordsWithMistakes(ids);
-  if (!deletedWordsWithMistakes || deletedWordsWithMistakes.deletedCount === 0) {
+  if (
+    !deletedWordsWithMistakes ||
+    deletedWordsWithMistakes.deletedCount === 0
+  ) {
     return res.status(404).json({
       message: 'No words with the provided ids were found.',
     });

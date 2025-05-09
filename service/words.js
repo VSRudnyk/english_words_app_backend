@@ -18,14 +18,21 @@ const getWordsWithMistakes = async () => {
   return await Mistakes.find({});
 };
 
-const addWordWithMistakes = async (item) => {
-  const { translation } = item;
-  const mistakes = await Mistakes.find({ translation });
-  if (mistakes.length > 0) {
-    return;
+// const addWordWithMistakes = async (items) => {
+// const { translation } = item;
+// const mistakes = await Mistakes.find({ translation });
+// if (mistakes.length > 0) {
+//   return;
+// }
+
+//   return await Mistakes.create(item);
+// };
+const addWordWithMistakes = async (items) => {
+  if (!Array.isArray(items) || items.length === 0) {
+    throw new Error('Invalid input. Provide a non-empty array of items.');
   }
 
-  return await Mistakes.create(item);
+  return await Mistakes.insertMany(items, { ordered: false });
 };
 
 const updateWord = async (id, body) => {
@@ -43,7 +50,10 @@ const removeWord = async (id) => {
 };
 
 const removeWordsWithMistakes = async (ids) => {
-  if (!Array.isArray(ids) || ids.some(id => !mongoose.Types.ObjectId.isValid(id))) {
+  if (
+    !Array.isArray(ids) ||
+    ids.some((id) => !mongoose.Types.ObjectId.isValid(id))
+  ) {
     return null;
   }
   return Mistakes.deleteMany({ _id: { $in: ids } });
