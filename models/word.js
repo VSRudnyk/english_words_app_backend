@@ -13,6 +13,14 @@ const wordSchema = Schema(
     synonyms: {
       type: String,
     },
+    correctAnswersCount: {
+      type: Number,
+      default: 0,
+    },
+    incorectAnswersCount: {
+      type: Number,
+      default: 0,
+    },
   },
 
   { versionKey: false, timestamps: true }

@@ -18,21 +18,33 @@ const getWordsWithMistakes = async () => {
   return await Mistakes.find({});
 };
 
-// const addWordWithMistakes = async (items) => {
-// const { translation } = item;
-// const mistakes = await Mistakes.find({ translation });
-// if (mistakes.length > 0) {
-//   return;
-// }
-
-//   return await Mistakes.create(item);
-// };
 const addWordWithMistakes = async (items) => {
   if (!Array.isArray(items) || items.length === 0) {
     throw new Error('Invalid input. Provide a non-empty array of items.');
   }
 
   return await Mistakes.insertMany(items, { ordered: false });
+};
+
+const updateWords = async (items) => {
+  if (!Array.isArray(items) || items.length === 0) {
+    throw new Error('Invalid input. Provide a non-empty array of items.');
+  }
+
+  const operations = items
+    .filter(item => item._id && mongoose.Types.ObjectId.isValid(item._id))
+    .map(item => ({
+      updateOne: {
+        filter: { _id: item._id },
+        update: { $set: { ...item } }
+      }
+    }));
+
+  if (operations.length === 0) {
+    throw new Error('No valid items to update.');
+  }
+
+  return await Word.bulkWrite(operations);
 };
 
 const updateWord = async (id, body) => {
@@ -66,6 +78,7 @@ module.exports = {
   addWord,
   addWordWithMistakes,
   updateWord,
+  updateWords,
   removeWord,
   removeWordsWithMistakes,
 };

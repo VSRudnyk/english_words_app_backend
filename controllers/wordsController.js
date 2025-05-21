@@ -5,6 +5,7 @@ const {
   addWord,
   addWordWithMistakes,
   updateWord,
+  updateWords,
   removeWord,
   removeWordsWithMistakes,
 } = require('../service/words');
@@ -46,12 +47,12 @@ const addNewWord = async (req, res, next) => {
 const addNewWordWithMistakes = async (req, res, next) => {
   const body = req.body;
   const result = await addWordWithMistakes(body);
-  // body.map(async (item) => await addWordWithMistakes(item));
   res.status(201).json(result);
 };
 
 const updateWordById = async (req, res, next) => {
   const body = req.body;
+  console.log('body', body);
   const id = req.params.wordId;
   const changedWordField = await updateWord(id, body);
   if (!changedWordField) {
@@ -60,6 +61,20 @@ const updateWordById = async (req, res, next) => {
     });
   }
   res.status(200).json(changedWordField);
+};
+
+const bulkUpdateWords = async (req, res, next) => {
+  const body = req.body;
+  const result = await updateWords(body);
+  if (!result) {
+    return res.status(404).json({
+      message: 'No words found to update',
+    });
+  }
+  res.status(200).json({
+    message: 'Words successfully updated',
+    result,
+  });
 };
 
 const deleteWord = async (req, res, next) => {
@@ -106,4 +121,5 @@ module.exports = {
   updateWordById,
   deleteWord,
   deleteWordsWithMistakes,
+  bulkUpdateWords,
 };
