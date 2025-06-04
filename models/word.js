@@ -21,6 +21,10 @@ const wordSchema = Schema(
       type: Number,
       default: 0,
     },
+    owner: {
+      type: String,
+      required: true,
+    },
   },
 
   { versionKey: false, timestamps: true }

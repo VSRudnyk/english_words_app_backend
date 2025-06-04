@@ -65,16 +65,22 @@ const updateWordById = async (req, res, next) => {
 
 const bulkUpdateWords = async (req, res, next) => {
   const body = req.body;
-  const result = await updateWords(body);
-  if (!result) {
-    return res.status(404).json({
-      message: 'No words found to update',
+  const userId = req.user._id;
+
+  try {
+    const result = await updateWords(body, userId);
+    if (!result || result.length === 0) {
+      return res.status(404).json({
+        message: 'No words found to update for this user',
+      });
+    }
+    res.status(200).json({
+      message: 'Words successfully updated',
+      // result,
     });
+  } catch (error) {
+    next(error);
   }
-  res.status(200).json({
-    message: 'Words successfully updated',
-    result,
-  });
 };
 
 const deleteWord = async (req, res, next) => {

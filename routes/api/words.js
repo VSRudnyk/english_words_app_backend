@@ -17,6 +17,8 @@ const {
   bulkUpdateWordsValidation,
 } = require('../../middelwares/validationMiddelware');
 
+const auth = require('../../middelwares/auth');
+
 const router = express.Router();
 
 router.get('/', getAllWords);
@@ -25,7 +27,7 @@ router.get('/mistakes', getAllWordsWithMistakes);
 router.post('/', addWordValidation, addNewWord);
 router.post('/mistakes', addNewWordWithMistakes);
 router.put('/update/:wordId', updateWordtValidation, updateWordById);
-router.put('/bulk-update', bulkUpdateWordsValidation, bulkUpdateWords);
+router.put('/bulk-update', auth, bulkUpdateWordsValidation, bulkUpdateWords);
 router.delete('/:wordId', deleteWord);
 router.delete('/mistakes/del', deleteWordsWithMistakes);
 

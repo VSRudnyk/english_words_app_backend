@@ -26,25 +26,34 @@ const addWordWithMistakes = async (items) => {
   return await Mistakes.insertMany(items, { ordered: false });
 };
 
-const updateWords = async (items) => {
+const updateWords = async (items, userId) => {
   if (!Array.isArray(items) || items.length === 0) {
     throw new Error('Invalid input. Provide a non-empty array of items.');
   }
 
   const operations = items
-    .filter(item => item._id && mongoose.Types.ObjectId.isValid(item._id))
-    .map(item => ({
+    .filter((item) => item._id && mongoose.Types.ObjectId.isValid(item._id))
+    .map((item) => ({
       updateOne: {
-        filter: { _id: item._id },
-        update: { $set: { ...item } }
-      }
+        filter: { _id: item._id, owner: userId },
+        update: { $set: { ...item, owner: userId } },
+      },
     }));
 
   if (operations.length === 0) {
     throw new Error('No valid items to update.');
   }
 
-  return await Word.bulkWrite(operations);
+  await Word.bulkWrite(operations);
+
+  const updatedIds = items
+    .filter((item) => item._id && mongoose.Types.ObjectId.isValid(item._id))
+    .map((item) => item._id);
+  const updatedWords = await Word.find({
+    _id: { $in: updatedIds },
+    owner: userId,
+  });
+  return updatedWords;
 };
 
 const updateWord = async (id, body) => {
