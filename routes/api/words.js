@@ -7,8 +7,8 @@ const {
   addNewWordWithMistakes,
   updateWordById,
   bulkUpdateWords,
-  deleteWord,
-  deleteWordsWithMistakes,
+  // deleteWord,
+  deleteWords,
 } = require('../../controllers/wordsController');
 
 const {
@@ -28,7 +28,7 @@ router.post('/', addWordValidation, addNewWord);
 router.post('/mistakes', addNewWordWithMistakes);
 router.put('/update/:wordId', updateWordtValidation, updateWordById);
 router.put('/bulk-update', auth, bulkUpdateWordsValidation, bulkUpdateWords);
-router.delete('/:wordId', deleteWord);
-router.delete('/mistakes/del', deleteWordsWithMistakes);
+// router.delete('/:wordId', deleteWord);
+router.delete('/bulk-delete', deleteWords);
 
 module.exports = router;

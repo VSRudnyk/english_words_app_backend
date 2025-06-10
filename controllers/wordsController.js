@@ -7,7 +7,7 @@ const {
   updateWord,
   updateWords,
   removeWord,
-  removeWordsWithMistakes,
+  removeWords,
 } = require('../service/words');
 
 const getAllWords = async (req, res, next) => {
@@ -69,6 +69,7 @@ const bulkUpdateWords = async (req, res, next) => {
 
   try {
     const result = await updateWords(body, userId);
+    console.log('result in bulkUpdateWords', result);
     if (!result || result.length === 0) {
       return res.status(404).json({
         message: 'No words found to update for this user',
@@ -76,7 +77,7 @@ const bulkUpdateWords = async (req, res, next) => {
     }
     res.status(200).json({
       message: 'Words successfully updated',
-      // result,
+      result,
     });
   } catch (error) {
     next(error);
@@ -94,19 +95,18 @@ const deleteWord = async (req, res, next) => {
   res.status(200).json(deletedWord);
 };
 
-const deleteWordsWithMistakes = async (req, res, next) => {
+const deleteWords = async (req, res, next) => {
   const { ids } = req.body;
+  console.log('ids in deleteWords', ids);
   if (!Array.isArray(ids) || ids.length === 0) {
     return res.status(400).json({
       message: 'Invalid request. Provide a non-empty array of ids.',
     });
   }
 
-  const deletedWordsWithMistakes = await removeWordsWithMistakes(ids);
-  if (
-    !deletedWordsWithMistakes ||
-    deletedWordsWithMistakes.deletedCount === 0
-  ) {
+  const deletedWords = await removeWords(ids);
+  console.log('deletedWords', deletedWords);
+  if (!deletedWords || deletedWords.deletedCount === 0) {
     return res.status(404).json({
       message: 'No words with the provided ids were found.',
     });
@@ -114,7 +114,7 @@ const deleteWordsWithMistakes = async (req, res, next) => {
 
   res.status(200).json({
     message: 'Words successfully deleted.',
-    deletedCount: deletedWordsWithMistakes.deletedCount,
+    deletedCount: deletedWords.deletedCount,
   });
 };
 
@@ -126,6 +126,6 @@ module.exports = {
   addNewWordWithMistakes,
   updateWordById,
   deleteWord,
-  deleteWordsWithMistakes,
+  deleteWords,
   bulkUpdateWords,
 };

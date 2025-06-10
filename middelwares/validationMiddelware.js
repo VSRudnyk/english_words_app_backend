@@ -43,7 +43,9 @@ module.exports = {
     const body = req.body;
     const schema = Joi.array().items(
       Joi.object({
-        _id: Joi.string().required().allow(''), // разрешаем _id
+        id: Joi.string().required().allow(''), // разрешаем _id
+        pendingSync: Joi.boolean().optional(),
+        owner: Joi.string().required(),
         word: Joi.string().optional(),
         translation: Joi.string().optional(),
         synonyms: Joi.string().allow('').optional(),

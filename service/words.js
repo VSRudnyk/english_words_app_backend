@@ -31,28 +31,60 @@ const updateWords = async (items, userId) => {
     throw new Error('Invalid input. Provide a non-empty array of items.');
   }
 
-  const operations = items
-    .filter((item) => item._id && mongoose.Types.ObjectId.isValid(item._id))
-    .map((item) => ({
-      updateOne: {
-        filter: { _id: item._id, owner: userId },
-        update: { $set: { ...item, owner: userId } },
-      },
-    }));
+  console.log('Items received:', items);
+  console.log('UserId:', userId);
 
-  if (operations.length === 0) {
-    throw new Error('No valid items to update.');
-  }
-
-  await Word.bulkWrite(operations);
-
-  const updatedIds = items
-    .filter((item) => item._id && mongoose.Types.ObjectId.isValid(item._id))
-    .map((item) => item._id);
-  const updatedWords = await Word.find({
-    _id: { $in: updatedIds },
+  // Получаем все существующие слова для этого пользователя по id
+  const existingWords = await Word.find({
+    id: { $in: items.filter((item) => item.id).map((item) => item.id) },
     owner: userId,
   });
+
+  console.log('Existing words found:', existingWords);
+
+  const existingWordsMap = new Map(
+    existingWords.map((word) => [word.id.toString(), word])
+  );
+
+  // Формируем операции обновления и вставки
+  const operations = items.map((item) => {
+    if (item.id && existingWordsMap.has(item.id.toString())) {
+      // Если слово существует (есть id и оно найдено в базе) - обновляем
+      return {
+        updateOne: {
+          filter: { id: item.id, owner: userId },
+          update: { $set: { ...item, owner: userId } },
+        },
+      };
+    } else {
+      // Если слова нет в базе - добавляем новое
+      return {
+        insertOne: {
+          document: {
+            ...item,
+            owner: userId,
+          },
+        },
+      };
+    }
+  });
+
+  if (operations.length === 0) {
+    throw new Error('No valid items to process.');
+  }
+
+  console.log('Operations to perform:', operations);
+  const bulkResult = await Word.bulkWrite(operations);
+  console.log('Bulk write result:', bulkResult);
+
+  // Получаем все обработанные слова
+  const wordsToFind = items.map((item) => item.id);
+  const updatedWords = await Word.find({
+    id: { $in: wordsToFind },
+    owner: userId,
+  });
+  console.log('Updated words:', updatedWords);
+
   return updatedWords;
 };
 
@@ -70,14 +102,11 @@ const removeWord = async (id) => {
   return Word.findByIdAndDelete(id);
 };
 
-const removeWordsWithMistakes = async (ids) => {
-  if (
-    !Array.isArray(ids) ||
-    ids.some((id) => !mongoose.Types.ObjectId.isValid(id))
-  ) {
+const removeWords = async (ids) => {
+  if (!Array.isArray(ids)) {
     return null;
   }
-  return Mistakes.deleteMany({ _id: { $in: ids } });
+  return Word.deleteMany({ id: { $in: ids } });
 };
 
 module.exports = {
@@ -89,5 +118,5 @@ module.exports = {
   updateWord,
   updateWords,
   removeWord,
-  removeWordsWithMistakes,
+  removeWords,
 };

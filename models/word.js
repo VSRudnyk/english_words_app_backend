@@ -2,6 +2,10 @@ const { Schema, model } = require('mongoose');
 
 const wordSchema = Schema(
   {
+    id: {
+      type: String,
+      required: true,
+    },
     word: {
       type: String,
       required: [true, 'Set word'],
