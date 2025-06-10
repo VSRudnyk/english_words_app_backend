@@ -19,7 +19,7 @@ const register = async (req, res) => {
       res.status(200).json({
         message: 'User already exists',
         words: userWords,
-        user: userWithoutPassword,
+        ...userWithoutPassword,
       });
     } catch (error) {
       res.status(500).json({
